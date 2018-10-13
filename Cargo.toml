@@ -21,3 +21,6 @@ iron = "0.*"
 
 [dependencies.router]
 git = "https://github.com/iron/router.git"
+
+[dependencies.logger]
+git = "https://github.com/iron/logger.git"

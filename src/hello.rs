@@ -1,10 +1,14 @@
 extern crate iron;
 extern crate router;
+extern crate logger;
 
 use std::env;
-use iron::{Iron, Request, Response, IronResult};
 use router::Router;
 use iron::status;
+use iron::prelude::*;
+use logger::Logger;
+
+mod all_out_of_bs;
 
 // Serves a string to the user.  Try accessing "/".
 fn hello(_: &mut Request) -> IronResult<Response> {
@@ -27,11 +31,23 @@ fn get_server_port() -> u16 {
 
 /// Configure and run our server.
 fn main() {
+    println!("\n\nhi!!!! 👍🏿\n");
+
     // Set up our URL router.
-    let mut router: Router = Router::new();
+    let mut router = Router::new();
     router.get("/", hello, "index");
+    router.get("/bs", all_out_of_bs::bs, "bs");
     router.get("/:name", hello_name, "name");
 
+    let (logger_before, logger_after) = Logger::new(None);
+    let mut chain = Chain::new(router);
+
+    // Link logger_before as your first before middleware.
+    chain.link_before(logger_before);
+
+    // Link logger_after as your *last* after middleware.
+    chain.link_after(logger_after);
+
     // Run the server.
-    Iron::new(router).http(("0.0.0.0", get_server_port())).unwrap();
+    Iron::new(chain).http(("0.0.0.0", get_server_port())).unwrap();
 }
