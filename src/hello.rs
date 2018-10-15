@@ -8,7 +8,7 @@ use iron::status;
 use iron::prelude::*;
 use logger::Logger;
 
-mod all_out_of_bs;
+mod all_bs;
 
 // Serves a customized string to the user.  Try accessing "/world".
 fn hello_name(req: &mut Request) -> IronResult<Response> {
@@ -29,7 +29,7 @@ fn main() {
 
     // Set up our URL router.
     let mut router = Router::new();
-    router.get("/", all_out_of_bs::bs, "index");
+    router.get("/", all_bs::bs, "index");
     router.get("/:name", hello_name, "name");
 
     let (logger_before, logger_after) = Logger::new(None);
