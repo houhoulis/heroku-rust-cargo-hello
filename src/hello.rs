@@ -10,12 +10,6 @@ use logger::Logger;
 
 mod all_out_of_bs;
 
-// Serves a string to the user.  Try accessing "/".
-fn hello(_: &mut Request) -> IronResult<Response> {
-    let resp = Response::with((status::Ok, "Hello world!"));
-    Ok(resp)
-}
-
 // Serves a customized string to the user.  Try accessing "/world".
 fn hello_name(req: &mut Request) -> IronResult<Response> {
     let params = req.extensions.get::<Router>().unwrap();
@@ -35,8 +29,7 @@ fn main() {
 
     // Set up our URL router.
     let mut router = Router::new();
-    router.get("/", hello, "index");
-    router.get("/bs", all_out_of_bs::bs, "bs");
+    router.get("/", all_out_of_bs::bs, "index");
     router.get("/:name", hello_name, "name");
 
     let (logger_before, logger_after) = Logger::new(None);

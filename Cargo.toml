@@ -18,6 +18,7 @@ path = "src/hello.rs"
 
 [dependencies]
 iron = "0.*"
+rand = "*"
 
 [dependencies.router]
 git = "https://github.com/iron/router.git"
